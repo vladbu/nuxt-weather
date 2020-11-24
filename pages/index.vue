@@ -8,35 +8,47 @@
         {{ location }}
         {{ weatherData }}
       </div>
+      <div v-if="cityVariants">
+        <c-button
+          v-for="(el, i) in cityVariants"
+          :key="i"
+          @click="setLocation({woeid: el.woeid})"
+        >
+          {{ el.title }}
+        </c-button>
+      </div>
       <div>
-        <button @click="getVariants">
-          get geo
-        </button>
+        <c-button
+          @click="getVariants"
+        >
+          Get Geo
+        </c-button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
+import CButton from '~/components/CButton'
 
 export default {
+  components: { CButton },
   async fetch () {
     await this.$store.dispatch('app/getWeatherData')
-  },
-  data () {
-    return {
-      variants: ['astro', 'civil', 'civillight', 'meteo', 'two'],
-      variant: 1
-    }
   },
   computed: {
     ...mapState({
       weatherData: state => state.app.weatherData,
-      location: state => state.app.location
+      location: state => state.app.location,
+      cityVariants: state => state.app.cityVariants
     })
   },
   methods: {
+    ...mapActions({
+      getWeather: 'app/getWeather',
+      setLocation: 'app/setLocation'
+    }),
     getGeo () {
       if (this.$geolocation.coords) {
         return {
@@ -47,7 +59,7 @@ export default {
     },
     async getVariants () {
       const geo = await this.getGeo()
-      await this.$store.dispatch('app/getWeather', { geo })
+      await this.getWeather({ geo })
     }
   }
 }
