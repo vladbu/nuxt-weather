@@ -38,11 +38,12 @@ export default {
   },
   methods: {
     getGeo () {
-      return this.$geolocation.coords
-        ? {
+      if (this.$geolocation.coords) {
+        return {
           latt: this.$geolocation.coords.latitude,
           long: this.$geolocation.coords.longitude
-        } : null
+        }
+      }
     },
     async getVariants () {
       const geo = await this.getGeo()
