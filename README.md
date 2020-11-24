@@ -1,4 +1,5 @@
-# nuxt-test
+# nuxt-weather [![Build Status](https://travis-ci.com/vladbu/nuxt-weather.svg?branch=master)](https://travis-ci.com/vladbu/nuxt-weather)
+uses SSR
 
 ## Build Setup
 
