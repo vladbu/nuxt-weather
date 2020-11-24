@@ -28,10 +28,9 @@ export default {
           method: 'GET',
           url: 'https://www.metaweather.com/api/location/search/',
           params: {
-            lattlong: geo.lat + ',' + geo.long
+            lattlong: geo.latt + ',' + geo.long
           }
         })
-        console.log(res)
         commit('SET_WEATHER_DATA', res)
       }
     }
