@@ -45,7 +45,9 @@ export default {
       } else {
         return {
           speed: 'm/s',
-          temp: 'C'
+          temp: 'C',
+          pressure: 'Pa',
+          humidity: '%'
         }
       }
     }
