@@ -138,10 +138,10 @@ export default {
         return (Math.abs(curr - goal) < Math.abs(prev - goal) ? curr : prev)
       })
       const speed = this.weatherData ? this.weatherData.wind.speed : 0
-      return {
+      return this.weatherData ? {
         val: '💨 ' + arrows[closest].icon,
         desc: `${speed} ${this.units.speed}, ${arrows[closest].text}`
-      }
+      } : null
     }
   }
 }
