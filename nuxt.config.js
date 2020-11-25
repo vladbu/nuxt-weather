@@ -4,6 +4,9 @@ export default {
   router: {
     base: process.env.NODE_ENV === 'production' ? '/nuxt-weather/' : ''
   },
+  env: {
+    API_KEY: process.env.API_KEY
+  },
 
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
@@ -34,7 +37,6 @@ export default {
     // https://go.nuxtjs.dev/eslint
     '@nuxtjs/eslint-module',
     // https://go.nuxtjs.dev/tailwindcss
-    '@nuxtjs/tailwindcss'
   ],
 
   // Modules (https://go.nuxtjs.dev/config-modules)

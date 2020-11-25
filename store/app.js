@@ -3,8 +3,12 @@ import axios from 'axios'
 export default {
   state () {
     return {
-      location: 0, // woeid
+      location: 0,
       weatherData: null,
+      units: {
+        value: 'metric',
+        items: ['metric', 'imperial']
+      },
       cityVariants: null
     }
   },
@@ -20,30 +24,30 @@ export default {
     }
   },
   actions: {
-    async getWeatherData ({ state, commit }) {
-      if (state.location) {
-        const res = await axios.get('https://cors-anywhere.herokuapp.com/' +
-          'https://www.metaweather.com/api/location/' + state.location)
-        commit('SET_WEATHER_DATA', res.data)
-      }
-    },
     async getWeather ({ state, commit }, { geo }) {
       if (geo) {
-        const res = await axios.get('https://cors-anywhere.herokuapp.com/' +
-          'https://www.metaweather.com/api/location/search/', {
+        const res = await axios.get('//api.openweathermap.org/data/2.5/weather', {
           params: {
-            lattlong: geo.latt + ',' + geo.long
-          },
-          headers: {
-            'Content-Type': 'application/jsonp'
+            lat: geo.lat,
+            lon: geo.lon,
+            units: state.units.value,
+            appid: process.env.API_KEY
           }
         })
-        commit('SET_CITY_VARIANTS', res.data)
+        commit('SET_WEATHER_DATA', res.data)
       }
-    },
-    setLocation ({ state, commit, dispatch }, { woeid }) {
-      commit('SET_LOCATION', woeid)
-      dispatch('getWeatherData')
+    }
+  },
+  getters: {
+    units (state) {
+      if (state.units.value === 'imperial') {
+        return {}
+      } else {
+        return {
+          speed: 'm/s',
+          temp: 'C'
+        }
+      }
     }
   }
 }
