@@ -7,32 +7,28 @@
       </c-button>
     </div>
     <div class="forecast">
-      forecast
+      <forecast />
     </div>
   </div>
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState } from 'vuex'
 import CButton from '~/components/CButton'
 import CurrentWeather from '~/components/CurrentWeather'
+import Forecast from '~/components/Forecast'
 
 export default {
-  components: { CurrentWeather, CButton },
+  components: { Forecast, CurrentWeather, CButton },
   async fetch () {
     // load saved location weather
   },
   computed: {
     ...mapState({
-      weatherData: state => state.app.weatherData,
-      location: state => state.app.location,
-      cityVariants: state => state.app.cityVariants
+      location: state => state.app.location
     })
   },
   methods: {
-    ...mapActions({
-      setLocation: 'app/setLocation'
-    }),
     getGeo () {
       if (this.$geolocation.coords) {
         return {
