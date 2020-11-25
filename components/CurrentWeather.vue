@@ -86,6 +86,7 @@ export default {
     .card {
       border-radius: 5px;
       padding: 5px 10px;
+      margin-top: 10px;
       color: white;
       width: fit-content;
       display: flex;
@@ -97,8 +98,8 @@ export default {
         font-size: 40px;
       }
 
-      &:not(&:first-of-type) {
-        margin-left: 10px;
+      &:not(&:last-of-type) {
+        margin-right: 10px;
       }
     }
 

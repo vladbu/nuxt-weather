@@ -55,15 +55,19 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
-    max-height: 60vh;
+    min-height: 60vh;
     background-color: #2b2b2b;
     color: white;
     padding: 20px;
     border-radius: 0 0 25px 25px;
+
+    > button {
+      margin-top: auto;
+    }
   }
 
   .forecast {
-    max-height: 40vh;
+    min-height: 40vh;
   }
 }
 </style>
