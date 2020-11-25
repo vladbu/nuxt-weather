@@ -19,12 +19,18 @@
           {{ temp.minmax }}
         </div>
       </div>
-      <div class="card current-weather_humidity">
+      <div
+        v-if="humidity"
+        class="card current-weather_humidity"
+      >
         <div class="card_val">
           ️{{ humidity }}
         </div>
       </div>
-      <div class="card current-weather_pressure">
+      <div
+        v-if="pressure"
+        class="card current-weather_pressure"
+      >
         <div class="card_val">
           {{ pressure }}
         </div>

@@ -3,7 +3,7 @@
     <div class="current">
       <current-weather />
       <c-button @click="getWeather">
-        Get Weather
+        Get Data
       </c-button>
     </div>
     <div class="forecast">
