@@ -1,19 +1,22 @@
 <template>
-  <div>
-    <div
+  <div class="forecast">
+    <weather-item
       v-for="(f, i) in forecast"
-      :key="f.dt + i"
-    >
-      {{ f.dt }}
-    </div>
+      :key="f.dt + i + ''"
+      type="main"
+      forecast
+      :data="f"
+    />
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import WeatherItem from '@/components/WeatherItem'
 
 export default {
   name: 'Forecast',
+  components: { WeatherItem },
   computed: {
     ...mapGetters({
       units: 'app/units',
@@ -23,6 +26,17 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+.forecast {
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 10px;
+  justify-items: center;
 
+  .weather-item {
+    width: 100%;
+    height: 100%;
+  }
+}
 </style>

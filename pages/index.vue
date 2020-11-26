@@ -6,9 +6,7 @@
         Get Data
       </c-button>
     </div>
-    <div class="forecast">
-      <forecast />
-    </div>
+    <forecast />
   </div>
 </template>
 

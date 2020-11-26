@@ -1,148 +1,59 @@
 <template>
   <div class="current-weather">
     <div class="current-weather_city-name">
-      📍{{ name }}
+      <span title="Location">📍</span>{{ weatherData ? weatherData.name : 'Unknown' }}
     </div>
-    <div class="current-weather_data">
-      <div
-        v-for="(w, i) in weather"
+    <div v-if="weatherData && weatherData.time" class="current-weather_time">
+      <span title="Time generated">🕰</span>{{ weatherData.time }}
+    </div>
+    <progress v-if="loading" />
+    <div v-else-if="!loading && weatherData" class="current-weather_data">
+      <weather-item
+        v-for="(w, i) in weatherData.weather"
         :key="i"
-        class="current-weather_data_short card"
-      >
-        <span class="card_val">{{ w.main }}</span>
-        <img
-          :src="`http://openweathermap.org/img/wn/${w.icon}@2x.png`"
-          :alt="w.description + ' image'"
-        >
-        <span>{{ w.description }}</span>
-      </div>
+        type="main"
+        :data="w"
+      />
       <br>
-      <!--temperature-->
-      <div
-        v-if="temp"
-        class="card current-weather_temp"
-      >
-        <div class="card_val">
-          {{ temp.val }}
-        </div>
-        <div>
-          Feels like:
-          {{ temp.feels }}
-        </div>
-        <div>
-          {{ temp.minmax }}
-        </div>
-      </div>
-      <!--humidity-->
-      <div
-        v-if="humidity"
-        class="card current-weather_humidity"
-      >
-        <div class="card_val">
-          ️{{ humidity }}
-        </div>
-      </div>
-      <!--pressure-->
-      <div
-        v-if="pressure"
-        class="card current-weather_pressure"
-      >
-        <div class="card_val">
-          {{ pressure }}
-        </div>
-      </div>
-      <div
-        v-if="wind"
-        class="card current-weather_wind"
-      >
-        <div class="card_val">
-          {{ wind.val }}
-        </div>
-        <div>
-          {{ wind.desc }}
-        </div>
-      </div>
+      <weather-item
+        v-if="weatherData.temp"
+        type="temp"
+        :data="weatherData.temp"
+      />
+      <weather-item
+        v-if="weatherData.humidity"
+        type="humidity"
+        :data="weatherData.humidity"
+      />
+      <weather-item
+        v-if="weatherData.pressure"
+        type="pressure"
+        :data="weatherData.pressure"
+      />
+      <weather-item
+        v-if="weatherData.wind"
+        type="wind"
+        :data="weatherData.wind"
+      />
     </div>
   </div>
 </template>
 
 <script>
 import { mapState, mapGetters } from 'vuex'
+import WeatherItem from '@/components/WeatherItem'
 
 export default {
   name: 'CurrentWeather',
+  components: { WeatherItem },
   computed: {
     ...mapState({
-      weatherData: state => state.app.weatherData
+      loading: state => state.app.loading
     }),
     ...mapGetters({
-      units: 'app/units'
-    }),
-    weather () {
-      return this.weatherData ? this.weatherData.weather : null
-    },
-    name () {
-      return this.weatherData ? this.weatherData.name + ', ' + this.weatherData.sys.country : 'Unknown'
-    },
-    temp () {
-      return this.weatherData ? {
-        val: `🌡${Math.round(this.weatherData.main.temp)}°${this.units.temp}`,
-        feels: `${Math.round(this.weatherData.main.feels_like)}°${this.units.temp}`,
-        minmax: `⬆ ${Math.round(this.weatherData.main.temp_max)}°${this.units.temp}️` + ' ' +
-          `⬇ ️${Math.round(this.weatherData.main.temp_min)}°${this.units.temp}️`
-      } : null
-    },
-    humidity () {
-      return this.weatherData ? `☁️ ${this.weatherData.main.humidity} ${this.units.humidity}` : null
-    },
-    pressure () {
-      return this.weatherData ? `➡️😫⬅️ ${this.weatherData.main.pressure} ${this.units.pressure}` : null
-    },
-    wind () {
-      const arrows = {
-        360: {
-          icon: '⬇️',
-          text: 'North'
-        },
-        45: {
-          icon: '↙️',
-          text: 'North East'
-        },
-        90: {
-          icon: '⬅️',
-          text: 'South'
-        },
-        135: {
-          icon: '↖️',
-          text: 'South East'
-        },
-        180: {
-          icon: '⬆️',
-          text: 'South'
-        },
-        225: {
-          icon: '↗️',
-          text: 'South West'
-        },
-        270: {
-          icon: '➡️',
-          text: 'West'
-        },
-        315: {
-          icon: '↘️',
-          text: 'North West'
-        }
-      }
-      const goal = this.weatherData ? this.weatherData.wind.deg : 0
-      const closest = Object.keys(arrows).reduce((curr, prev) => {
-        return (Math.abs(curr - goal) < Math.abs(prev - goal) ? curr : prev)
-      })
-      const speed = this.weatherData ? this.weatherData.wind.speed : 0
-      return this.weatherData ? {
-        val: '💨 ' + arrows[closest].icon,
-        desc: `${speed} ${this.units.speed}, ${arrows[closest].text}`
-      } : null
-    }
+      units: 'app/units',
+      weatherData: 'app/current'
+    })
   }
 }
 </script>
@@ -158,22 +69,19 @@ export default {
       font-size: 50px;
     }
 
-    .card {
-      border-radius: 5px;
-      padding: 5px 10px;
+    &_time {
+      margin-left: 15px;
+      font-size: 18px;
+    }
+
+    progress {
+      width: 100%;
+    }
+
+    .weather-item {
       margin-top: 10px;
-      color: white;
-      width: fit-content;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
 
-      &_val {
-        font-size: 40px;
-      }
-
-      &:not(&:last-of-type) {
+      :not(&:last-of-type) {
         margin-right: 10px;
       }
     }
@@ -182,30 +90,6 @@ export default {
       padding: 0 15px;
       display: flex;
       flex-wrap: wrap;
-
-      &_short {
-      background-color: lightslategray;
-
-        &_description {
-          font-size: 14px;
-        }
-      }
-    }
-
-    &_temp {
-      background-color: #6D47EF;
-    }
-
-    &_humidity {
-      background-color: #526488;
-    }
-
-    &_pressure {
-      background-color: #ea6534;
-    }
-
-    &_wind {
-      background-color: palevioletred;
     }
   }
 </style>
