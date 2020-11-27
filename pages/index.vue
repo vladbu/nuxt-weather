@@ -3,7 +3,7 @@
     <div class="current">
       <current-weather />
       <p v-if="!geo">
-        Geolocation is not enabled, please enable it
+        Geolocation is disabled, please enable it
       </p>
       <c-button @click="$store.dispatch('app/getWeather', { geo })">
         Get Data
