@@ -14,26 +14,11 @@
         type="main"
         :data="w"
       />
-      <br>
       <weather-item
-        v-if="weatherData.temp"
-        type="temp"
-        :data="weatherData.temp"
-      />
-      <weather-item
-        v-if="weatherData.humidity"
-        type="humidity"
-        :data="weatherData.humidity"
-      />
-      <weather-item
-        v-if="weatherData.pressure"
-        type="pressure"
-        :data="weatherData.pressure"
-      />
-      <weather-item
-        v-if="weatherData.wind"
-        type="wind"
-        :data="weatherData.wind"
+        v-for="(el, key) in weatherData.data"
+        :key="key"
+        :type="key"
+        :data="el"
       />
     </div>
   </div>

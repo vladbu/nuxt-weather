@@ -49,7 +49,7 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-height: 60vh;
+    min-height: 40vh;
     background-color: #2b2b2b;
     color: white;
     padding: 20px;
@@ -58,10 +58,6 @@ export default {
     > button {
       margin-top: auto;
     }
-  }
-
-  .forecast {
-    min-height: 40vh;
   }
 }
 </style>

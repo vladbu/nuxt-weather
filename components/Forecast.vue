@@ -1,9 +1,9 @@
 <template>
-  <div class="forecast">
+  <div class="forecast_container">
     <weather-item
       v-for="(f, i) in forecast"
       :key="f.dt + i + ''"
-      type="main"
+      type="forecast"
       forecast
       :data="f"
     />
@@ -27,7 +27,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.forecast {
+.forecast_container {
   padding: 20px;
   display: flex;
   grid-gap: 10px;

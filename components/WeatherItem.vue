@@ -3,7 +3,7 @@
     class="weather-item"
     :class="type"
   >
-    <template v-if="main">
+    <template v-if="main || forecast">
       {{ data.dt }}
       <img
         :title="data.main"
@@ -50,21 +50,32 @@ export default {
       type: String,
       default: 'main',
       validator (value) {
-        return ['main', 'temp', 'humidity', 'pressure', 'wind', 'forecast'].includes(value)
+        return [
+          'main',
+          'temp',
+          'humidity',
+          'pressure',
+          'wind',
+          'forecast',
+          'sunset',
+          'sunrise',
+          'visibility',
+          'dew',
+          'pop'
+        ].includes(value)
       }
     },
     data: {
       type: [Array, Object],
       required: true
-    },
-    forecast: {
-      type: Boolean,
-      default: false
     }
   },
   computed: {
     main () {
       return this.type === 'main'
+    },
+    forecast () {
+      return this.type === 'forecast'
     }
   }
 }
@@ -105,10 +116,36 @@ export default {
       background-color: palevioletred;
     }
 
+    &.forecast {
+      background-color: #232323;
+    }
+
+    &.sunrise {
+      background-color: skyblue;
+    }
+
+    &.sunset {
+      background-color: midnightblue;
+    }
+
+    &.visibility {
+      background-color: mediumvioletred;
+    }
+
+    &.dew {
+      background-color: olivedrab;
+    }
+
+    &.pop {
+      background-color: royalblue;
+    }
+
     &_forecast {
       margin-top: 20px;
+      padding: 10px 20px;
       display: grid;
       grid-template-columns: auto 1fr;
+      grid-gap: 0 40px;
       align-items: center;
 
     > div:nth-of-type(2n - 1) {
