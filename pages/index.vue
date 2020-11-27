@@ -2,7 +2,10 @@
   <div class="container">
     <div class="current">
       <current-weather />
-      <c-button @click="getWeather">
+      <p v-if="!geo">
+        Geolocation is not enabled, please enable it
+      </p>
+      <c-button @click="$store.dispatch('app/getWeather', { geo })">
         Get Data
       </c-button>
     </div>
@@ -24,20 +27,12 @@ export default {
   computed: {
     ...mapState({
       location: state => state.app.location
-    })
-  },
-  methods: {
-    getGeo () {
-      if (this.$geolocation.coords) {
-        return {
-          lat: this.$geolocation.coords.latitude,
-          lon: this.$geolocation.coords.longitude
-        }
-      }
-    },
-    async getWeather () {
-      const geo = await this.getGeo()
-      await this.$store.dispatch('app/getWeather', { geo })
+    }),
+    geo () {
+      return this.$geolocation.coords ? {
+        lat: this.$geolocation.coords.latitude,
+        lon: this.$geolocation.coords.longitude
+      } : null
     }
   }
 }
