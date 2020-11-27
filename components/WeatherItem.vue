@@ -7,8 +7,9 @@
       {{ data.dt }}
       <img
         :title="data.main"
-        :src="`http://openweathermap.org/img/wn/${data.icon}@2x.png`"
+        :src="(`http://openweathermap.org/img/wn/${data.icon}@2x.png`)"
         :alt="data.description + ' image'"
+        class="weather-item_val"
       >
       <span>{{ data.description }}</span>
     </template>
@@ -94,6 +95,7 @@ export default {
 
     &_val {
       font-size: 40px;
+      cursor: pointer;
     }
 
     &.main {
