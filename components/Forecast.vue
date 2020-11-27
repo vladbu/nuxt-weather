@@ -29,14 +29,15 @@ export default {
 <style scoped lang="scss">
 .forecast {
   padding: 20px;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  display: flex;
   grid-gap: 10px;
   justify-items: center;
+  overflow: auto;
 
   .weather-item {
     width: 100%;
     height: 100%;
+    white-space: nowrap;
   }
 }
 </style>
