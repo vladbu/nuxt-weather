@@ -2,8 +2,8 @@
   <div class="container">
     <div class="current">
       <current-weather />
-      <p v-if="!geo">
-        Geolocation is disabled, please enable it
+      <p>
+        {{ msg }}
       </p>
       <c-button @click="$store.dispatch('app/getWeather', { geo })">
         Get Data
@@ -33,6 +33,15 @@ export default {
         lat: this.$geolocation.coords.latitude,
         lon: this.$geolocation.coords.longitude
       } : null
+    },
+    msg () {
+      if (this.$geolocation.loading) {
+        return 'Loading location...'
+      }
+      if (!this.geo) {
+        return 'Geolocation is disabled, please enable it'
+      }
+      return ''
     }
   }
 }
@@ -47,7 +56,7 @@ export default {
     min-height: 40vh;
     background-color: #2b2b2b;
     color: white;
-    padding: 20px;
+    padding: 20px 5px;
     border-radius: 0 0 25px 25px;
 
     > button {
