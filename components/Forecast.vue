@@ -30,14 +30,13 @@ export default {
 .forecast_container {
   padding: 20px;
   display: flex;
-  grid-gap: 10px;
-  justify-items: center;
   overflow: auto;
 
   .weather-item {
     width: 100%;
     height: 100%;
     white-space: nowrap;
+    margin-right: 10px;
   }
 }
 </style>
