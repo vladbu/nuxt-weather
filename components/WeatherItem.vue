@@ -7,7 +7,7 @@
       {{ data.dt }}
       <img
         :title="data.main"
-        :src="(`http://openweathermap.org/img/wn/${data.icon}@2x.png`)"
+        :src="require(`../assets/${data.icon}.png`)"
         :alt="data.description + ' image'"
         class="weather-item_val"
       >
