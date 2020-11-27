@@ -52,6 +52,8 @@ export default {
 
     &_city-name {
       font-size: 50px;
+      display: inline-flex;
+      word-break: break-all;
     }
 
     &_time {
