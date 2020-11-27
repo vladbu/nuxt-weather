@@ -1,27 +1,63 @@
 <template>
   <div class="forecast_container">
-    <weather-item
-      v-for="(f, i) in forecast"
-      :key="f.dt + i + ''"
-      type="forecast"
-      forecast
-      :data="f"
-    />
+    <div
+      v-show="forecast"
+      class="forecast_container_type-select"
+    >
+      <label>
+        {{ values[0] }}
+        <input
+          v-model="forecastType"
+          type="radio"
+          name="type"
+          :value="values[0]"
+        >
+      </label>
+      <label>
+        {{ values[1] }}
+        <input
+          v-model="forecastType"
+          type="radio"
+          name="type"
+          :value="values[1]"
+        >
+      </label>
+    </div>
+    <div class="forecast_container_items">
+      <weather-item
+        v-for="(f, i) in forecast"
+        :key="f.dt + i + ''"
+        type="forecast"
+        forecast
+        :data="f"
+      />
+    </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import WeatherItem from '@/components/WeatherItem'
 
 export default {
   name: 'Forecast',
   components: { WeatherItem },
   computed: {
+    ...mapState({
+      values: state => state.app.showForecast.items
+    }),
     ...mapGetters({
       units: 'app/units',
       forecast: 'app/forecast'
-    })
+    }),
+    forecastType: {
+      get () {
+        return this.$store.state.app.showForecast.value
+      },
+      set (newVal) {
+        this.$store.commit('app/SET_FORECAST_TYPE', newVal)
+      }
+    }
   }
 }
 </script>
@@ -30,13 +66,29 @@ export default {
 .forecast_container {
   padding: 20px;
   display: flex;
-  overflow: auto;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
 
-  .weather-item {
+  &_type-select {
+    margin: 0 0 10px 0;
+
+    label {
+      text-transform: capitalize;
+    }
+  }
+
+  &_items {
+    display: flex;
+    overflow: auto;
     width: 100%;
-    height: 100%;
-    white-space: nowrap;
-    margin-right: 10px;
+
+    .weather-item {
+      width: 100%;
+      height: 100%;
+      white-space: nowrap;
+      margin-right: 10px;
+    }
   }
 }
 </style>

@@ -29,15 +29,18 @@
       class="weather-item_forecast"
     >
       <template v-for="(item, i) in data.detail">
-        <div
-          :key="i + '_icon'"
-          :title="item.title"
-        >
-          {{ item.icon }}
-        </div>
-        <div :key="i + '_value'">
-          {{ item.val }}
-        </div>
+        <template v-if="item">
+          <div
+            :key="i + '_icon'"
+            :title="item.title"
+            class="weather-item_forecast_icon"
+          >
+            {{ item.icon }}
+          </div>
+          <div :key="i + '_value'">
+            {{ item.val }}
+          </div>
+        </template>
       </template>
     </div>
   </div>
@@ -150,9 +153,13 @@ export default {
       grid-gap: 0 40px;
       align-items: center;
 
-    > div:nth-of-type(2n - 1) {
-      font-size: 24px;
-    }
+      &_icon {
+        cursor: pointer;
+      }
+
+      > div:nth-of-type(2n - 1) {
+        font-size: 24px;
+      }
 
       > div:nth-of-type(2n) {
         justify-self: end;

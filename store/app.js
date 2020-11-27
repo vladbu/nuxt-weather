@@ -1,4 +1,5 @@
 import axios from 'axios'
+import Vue from 'vue'
 import { format, isToday, isTomorrow } from 'date-fns'
 
 export default {
@@ -49,44 +50,6 @@ export default {
           icon: '↘️',
           text: 'North West'
         }
-      },
-      weatherIcons: {
-        '01': {
-          d: '☀️',
-          n: '🌑'
-        },
-        '02': {
-          d: '🌥',
-          n: '🌥'
-        },
-        '03': {
-          d: '⛅️',
-          n: '⛅️'
-        },
-        '04': {
-          d: '☁️',
-          n: '☁️'
-        },
-        '09': {
-          d: '️🌧',
-          n: '️🌧'
-        },
-        10: {
-          d: '️🌦',
-          n: '️🌦'
-        },
-        11: {
-          d: '️🌩',
-          n: '️🌩'
-        },
-        13: {
-          d: '️❄️',
-          n: '️❄️'
-        },
-        50: {
-          d: '️🌫',
-          n: '🌫'
-        }
       }
     }
   },
@@ -102,6 +65,9 @@ export default {
     },
     SET_FORECAST (state, data) {
       state.forecast = data
+    },
+    SET_FORECAST_TYPE (state, data) {
+      Vue.set(state.showForecast, 'value', data)
     }
   },
   actions: {
@@ -219,6 +185,9 @@ export default {
         }
       } : null
     },
+    dailyForecast (state) {
+      return state.showForecast.value === state.showForecast.items[0]
+    },
     forecast (state, getters) {
       return state.forecast ? state.forecast[state.showForecast.value].map((el) => {
         const timestamp = new Date(el.dt * 1000)
@@ -228,24 +197,29 @@ export default {
         })
         return {
           ...el.weather[0],
-          dt: isToday(timestamp) ? 'Today'
-            : isTomorrow(timestamp) ? 'Tomorrow'
-              : format(timestamp, 'MMM do yyyy'),
+          dt: isToday(timestamp) ? `Today${getters.dailyForecast ? '' : format(timestamp, ' HH:mm')}`
+            : isTomorrow(timestamp) ? `Tomorrow${getters.dailyForecast ? '' : format(timestamp, ' HH:mm')}`
+              : format(timestamp, `MMM do yyyy${getters.dailyForecast ? '' : format(timestamp, ' HH:mm')}`),
           detail: {
-            sunrise: {
+            sunrise: getters.dailyForecast ? {
               icon: '🌞',
               title: 'Dawn',
               val: format(new Date(el.sunrise * 1000), 'HH:mm:ss')
-            },
-            maxTemp: {
+            } : null,
+            maxTemp: getters.dailyForecast ? {
               icon: '⬆️🌡',
               val: `${Math.round(el.temp.max)}°${getters.units.temp}`,
               title: 'Max temperature'
-            },
-            minTemp: {
+            } : null,
+            minTemp: getters.dailyForecast ? {
               icon: '⬇️🌡',
               val: `${Math.round(el.temp.min)}°${getters.units.temp}`,
               title: 'Min temperature'
+            } : null,
+            temp: getters.dailyForecast ? null : {
+              icon: '️🌡',
+              val: `${Math.round(el.temp)}°${getters.units.temp}`,
+              title: 'Temperature'
             },
             pop: {
               icon: '☔️%',
@@ -272,11 +246,11 @@ export default {
               title: 'Atmospheric pressure',
               val: `${state.weatherData.main.pressure}${getters.units.pressure}`
             },
-            sunset: {
+            sunset: getters.dailyForecast ? {
               icon: '🌚',
               title: 'Dusk',
               val: format(new Date(el.sunset * 1000), 'HH:mm:ss')
-            }
+            } : null
           }
         }
       }).slice(1) : null
