@@ -1,5 +1,8 @@
 <template>
-  <button v-on="$listeners">
+  <button
+    v-bind="$attrs"
+    v-on="$listeners"
+  >
     <slot />
   </button>
 </template>
@@ -15,13 +18,17 @@ export default {
     margin: 10px;
     padding: 5px 10px;
     font-size: 24px;
-    background-color: #3b8070;
     color: white;
     border: none;
     border-radius: 5px;
 
-    &:hover {
+    &:not(&[disabled]) {
+      background-color: #3b8070;
       cursor: pointer;
+    }
+
+    &[disabled] {
+      background-color: lightslategrey;
     }
   }
 </style>

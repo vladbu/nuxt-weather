@@ -4,7 +4,7 @@
       v-show="forecast"
       class="forecast_container_type-select"
     >
-      <label>
+      <label :class="{'checked': forecastType === values[0]}">
         {{ values[0] }}
         <input
           v-model="forecastType"
@@ -13,7 +13,7 @@
           :value="values[0]"
         >
       </label>
-      <label>
+      <label :class="{'checked': forecastType === values[1]}">
         {{ values[1] }}
         <input
           v-model="forecastType"
@@ -64,17 +64,42 @@ export default {
 
 <style scoped lang="scss">
 .forecast_container {
-  padding: 20px;
+  padding: 20px 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   overflow: hidden;
 
   &_type-select {
-    margin: 0 0 10px 0;
+    margin: 0 0 20px 0;
 
     label {
       text-transform: capitalize;
+      border: 1px solid #2b2b2b;
+      padding: 5px;
+      font-size: 16px;
+
+      &.checked {
+        background-color: #727272;
+        color: white;
+      }
+
+      &:not(.checked) {
+        cursor: pointer;
+      }
+
+      &:first-of-type {
+        border-radius: 5px 0 0 5px;
+        transition: all .3s;
+      }
+
+      &:last-of-type {
+        border-radius: 0 5px 5px 0;
+      }
+
+      input {
+        display: none;
+      }
     }
   }
 
@@ -88,6 +113,10 @@ export default {
       height: 100%;
       white-space: nowrap;
       margin-right: 10px;
+
+      &:first-of-type {
+        margin-left: 10px;
+      }
     }
   }
 }

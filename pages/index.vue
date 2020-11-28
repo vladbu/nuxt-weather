@@ -5,8 +5,11 @@
       <p>
         {{ msg }}
       </p>
-      <c-button @click="$store.dispatch('app/getWeather', { geo })">
-        Get Data
+      <c-button
+        v-show="current && geo"
+        @click="$store.dispatch('app/getWeather', { geo })"
+      >
+        Update data
       </c-button>
     </div>
     <forecast />
@@ -14,19 +17,19 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import CButton from '~/components/CButton'
 import CurrentWeather from '~/components/CurrentWeather'
 import Forecast from '~/components/Forecast'
 
 export default {
   components: { Forecast, CurrentWeather, CButton },
-  async fetch () {
-    // load saved location weather
-  },
   computed: {
     ...mapState({
       location: state => state.app.location
+    }),
+    ...mapGetters({
+      current: 'app/current'
     }),
     geo () {
       return this.$geolocation.coords ? {
@@ -42,6 +45,15 @@ export default {
         return 'Geolocation is disabled, please enable it'
       }
       return ''
+    }
+  },
+  watch: {
+    '$geolocation.loading': {
+      handler (val) {
+        if (!this.current && !val) {
+          this.$store.dispatch('app/getWeather', { geo: this.geo })
+        }
+      }
     }
   }
 }
