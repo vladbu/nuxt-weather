@@ -15,7 +15,7 @@
     "core-js": "^3.8.1",
     "date-fns": "^2.16.1",
     "nuxt": "^2.14.12",
-    "vue-geolocation-api": "^0.1.19"
+    "vue-geolocation-api": "^0.1.21"
   },
   "devDependencies": {
     "@nuxt/types": "^2.14.12",
