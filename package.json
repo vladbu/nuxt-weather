@@ -13,7 +13,7 @@
   "dependencies": {
     "@nuxtjs/axios": "^5.12.5",
     "core-js": "^3.8.2",
-    "date-fns": "^2.16.1",
+    "date-fns": "^2.18.0",
     "nuxt": "^2.14.12",
     "vue-geolocation-api": "^0.1.21"
   },
